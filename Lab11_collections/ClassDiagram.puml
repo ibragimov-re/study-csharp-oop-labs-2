@@ -1,0 +1,97 @@
+@startuml
+top to bottom direction
+' ==============================
+' Интерфейсы
+' ==============================
+interface IInit {
+    +Init(): void
+    +RandomInit(): void
+    +Show(): void
+}
+
+interface IComparable {
+    +CompareTo(obj: object): int
+}
+
+interface IComparer {
+    +Compare(o1: object, o2: object): int
+}
+
+' ==============================
+' Классы организации
+' ==============================
+class Organization {
+    #MinNameLength: int
+    #MaxNameLength: int
+    #MaxEmployeesCount: int
+
+    #name: string
+    #employeesCount: int
+
+    +Name: string
+    +EmployeesCount: int
+
+    +Organization()
+    +Organization(orgName: string, empCount: int)
+    +Organization(otherOrg: Organization)
+
+    +ShowNonVirtual(): void
+    +Show(): void
+    +Init(): void
+    +RandomInit(): void
+    +Equals(obj: object): bool
+    +CompareTo(obj: object): int
+}
+
+Organization ..|> IInit
+Organization ..|> IComparable
+
+' ==============================
+' Library
+' ==============================
+class Library {
+    #MaxBooks: int
+    -booksCount: int
+    +BooksCount: int
+
+    +Library()
+    +Library(orgName: string, empCount: int, booksCount: int)
+    +Library(otherLib: Library)
+
+    +Init(): void
+    +Show(): void
+    +RandomInit(): void
+    +Equals(obj: object): bool
+}
+
+Library <|-- Organization
+
+' ==============================
+' Comparator
+' ==============================
+class OrganizationByEmployeesComparer {
+    +Compare(o1: object, o2: object): int
+}
+
+OrganizationByEmployeesComparer ..|> IComparer
+
+' ==============================
+' TestCollections
+' ==============================
+class TestCollections {
+    -col1: Queue<Library>
+    -col2: Queue<string>
+    -col3: SortedDictionary<Organization, Library>
+    -col4: SortedDictionary<string, Library>
+
+    +TestCollections(count: int = 1000)
+
+    +Add(libr: Library): void
+    +Remove(libr: Library): void
+    +MeasureSearchTime(): void
+}
+
+TestCollections --> Library
+TestCollections --> Organization
+
+@enduml
