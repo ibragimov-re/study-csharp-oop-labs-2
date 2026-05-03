@@ -1,0 +1,148 @@
+@startuml
+top to bottom direction
+
+' ==============================
+' Классы организации
+' ==============================
+class Organization {
+    #MinNameLength: int
+    #MaxNameLength: int
+    #MaxEmployeesCount: int
+
+    #name: string
+    #employeesCount: int
+
+    +Name: string
+    +EmployeesCount: int
+
+    +Organization()
+    +Organization(orgName: string, empCount: int)
+    +Organization(otherOrg: Organization)
+
+    +ShowNonVirtual(): void
+    +Show(): void
+    +Init(): void
+    +RandomInit(): void
+    +Equals(obj: object): bool
+    +CompareTo(obj: object): int
+}
+
+' ==============================
+' Factory
+' ==============================
+class Factory {
+    #MinTypeLength: int
+    #MaxTypeLength: int
+
+    -productionType: string
+    +ProductionType: string
+    ...
+}
+
+Factory <|-- Organization
+
+' ==============================
+' InsuranceCompany
+' ==============================
+class InsuranceCompany {
+    #MinTypeLength: int
+    #MaxTypeLength: int
+
+    -insuranceType: string
+    +InsuranceType: string
+    ...
+}
+
+InsuranceCompany <|-- Organization
+
+' ==============================
+' Library
+' ==============================
+class Library {
+    #MaxBooks: int
+    -booksCount: int
+    +BooksCount: int
+    ...
+}
+
+Library <|-- Organization
+
+' ==============================
+' ShipbuildingCompany
+' ==============================
+class ShipbuildingCompany {
+    #MaxShips: int
+    -shipCount: int
+    +ShipCount: int
+    ...
+}
+
+ShipbuildingCompany <|-- Organization
+
+
+' ==============================
+' HashNode<T>
+' ==============================
+class HashNode<T> {
+    -Key: int
+    -Value: T
+    -Next: HashNode<T>
+
+    +HashNode(val: T)
+    +ToString(): string
+}
+
+HashNode --> HashNode : Next
+HashNode --> Organization
+
+' ==============================
+' MyCollection<T>
+' ==============================
+class MyCollection {
+    -table: HashNode<T>[]
+
+    +Count: int
+    +Capacity: int
+    +IsSynchronized: bool
+    +SyncRoot: object
+
+    +MyCollection()
+    +MyCollection(capacity: int)
+    +MyCollection(col: MyCollection<T>)
+
+    +Add(item: T): void
+    +AddRange(items: T[]): void
+    +Remove(item: T): bool
+    +RemoveRange(items: T[]): void
+    +Find(name: string): T
+    +DeepCopy(): MyCollection<T>
+    +ShallowCopy(): MyCollection<T>
+    +Clear(): void
+    +CopyTo(array: Array, index: int): void
+
+    +GetEnumerator(): IEnumerator<T>
+    
+
+}
+
+MyCollection --> HashNode
+MyCollection --> MyEnumerator
+
+' ==============================
+' MyEnumerator<T>
+' ==============================
+class MyEnumerator {
+    -collection: MyCollection<T>
+    -index: int
+    -currentNode: HashNode<T>
+
+    +Current: T
+    +MoveNext(): bool
+    +Reset(): void
+    +Dispose(): void
+}
+
+MyEnumerator --> MyCollection
+MyEnumerator --> HashNode
+
+@enduml
