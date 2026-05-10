@@ -1,0 +1,74 @@
+@startuml
+top to bottom direction
+
+Organization <|-- Factory
+Organization <|-- InsuranceCompany
+Organization <|-- Library
+Organization <|-- ShipbuildingCompany
+
+HashNode --> HashNode : Next
+HashNode --> Organization
+
+MyCollection --> HashNode
+MyCollection --> MyEnumerator
+
+class MyEnumerator
+
+MyEnumerator --> MyCollection
+MyEnumerator --> HashNode
+
+class CollectionHandlerEventArgs {
+    +CollectionName: string
+    +ChangeType: string
+    +ChangedItem: object
+
+    +CollectionHandlerEventArgs(...)
+}
+CollectionHandlerEventArgs --|> EventArgs
+
+
+class CollectionHandler <<delegate>> {
+    +Invoke(...): void
+}
+CollectionHandler --> CollectionHandlerEventArgs
+
+class MyNewCollection {
+    +Name: string
+    +CollectionCountChanged: CollectionHandler
+    +CollectionReferenceChanged: CollectionHandler
+
+    +MyNewCollection()
+    +MyNewCollection(capacity: int)
+    +Add(item: T): void
+    +Add(items: T[]): void
+    +Remove(item: T): bool
+    +Remove(index: int): bool
+    +this[index: int]: T
+
+    #OnCollectionCountChanged(...): void
+    #OnCollectionReferenceChanged(...): void
+}
+MyNewCollection --|> MyCollection
+MyNewCollection --> CollectionHandler
+MyNewCollection --> CollectionHandlerEventArgs
+
+class JournalEntry {
+    +CollectionName: string
+    +ChangeType: string
+    +ChangedItemData: string
+
+    +JournalEntry(...)
+    +ToString(): string
+}
+
+class Journal {
+    -entries: List<JournalEntry>
+
+    +CollectionEventHandler(...): void
+    +ToString(): string
+}
+Journal --> JournalEntry
+Journal --> CollectionHandlerEventArgs
+MyNewCollection --> Journal
+
+@enduml
