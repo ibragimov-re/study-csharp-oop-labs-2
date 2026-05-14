@@ -1,0 +1,56 @@
+@startuml
+left to right direction
+
+class Organization {
+    #name: string
+    #employeesCount: int
+
+    +Name: string
+    +EmployeesCount: int
+
+    +Organization()
+    +Organization(name: string, employeesCount: int)
+    +Show(): void
+}
+
+Factory --|> Organization
+InsuranceCompany --|> Organization
+Library --|> Organization
+ShipbuildingCompany --|> Organization
+
+class Query {
+    +GetWhereMethod(orgs): IEnumerable<Organization>
+    +GetUnion(a,b): IEnumerable<Organization>
+    +GetIntersect(a,b): IEnumerable<Organization>
+    +GetExcept(a,b): IEnumerable<Organization>
+    +GetSum(orgs): int
+    +GetMax(orgs): int
+    +GetMin(orgs): int
+    +GetAverage(orgs): double
+    +GetGroupMethod(orgs): IEnumerable<GroupResult>
+    +GetLetQuery(orgs): IEnumerable<LetResult>
+    +GetJoinMethod(city, info): IEnumerable<JoinResult>
+}
+
+class GroupResult {
+    +Key: bool
+    +Count: int
+}
+
+class LetResult {
+    +Name: string
+    +Category: string
+}
+
+class JoinResult {
+    +District: string
+    +OrgCount: int
+    +PeopleCount: int
+}
+
+Query --> Organization
+Query --> GroupResult
+Query --> LetResult
+Query --> JoinResult
+
+@enduml
