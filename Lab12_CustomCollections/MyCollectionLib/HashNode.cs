@@ -3,16 +3,15 @@
 namespace MyCollectionLib
 {
     // Элемент хеш-таблицы
-    internal class HashNode<T> where T : Organization
+    internal class HashNode<T>
     {
-        internal int Key { get; }
+        internal int Key => Value?.GetHashCode() ?? 0;
         internal T Value { get; }
         internal HashNode<T> Next { get; set; }
 
         internal HashNode(T val)
         {
             Value = val;
-            Key = Value.Name.GetHashCode();
             Next = null;
         }
 

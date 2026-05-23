@@ -64,7 +64,14 @@ namespace MyCollectionLib
 
             Count++;
         }
-        
+
+
+        internal void Update(T oldItem, T newItem)
+        {
+            Remove(oldItem);
+            Add(newItem);
+        }
+
 
         public void AddRange(params T[] items)
         {
